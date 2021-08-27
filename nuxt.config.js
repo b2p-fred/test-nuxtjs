@@ -112,8 +112,8 @@ export default {
     ],
     redirect: {
       login: '/login',
-      logout: '/logout',
-      callback: '/',
+      logout: '/',
+      callback: '/login',
       home: '/'
     },
     vuex: {
@@ -140,13 +140,13 @@ export default {
           // No logout on the API backend
           logout: false,
         },
-        token: {
-          // required: true,
-          global: true,
-          property: 'data.token',
-          name: 'Authorization',
-          type: 'Bearer',
-        },
+        // token: {
+        //   // required: true,
+        //   global: true,
+        //   property: 'token',
+        //   name: 'Authorization',
+        //   type: 'Bearer',
+        // },
         user: {
           property: false,
           autoFetch: true

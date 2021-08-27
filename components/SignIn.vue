@@ -67,7 +67,7 @@ import { mapState } from "vuex";
 
 export default {
   data: () => ({
-    visible: true,
+    visible: false,
     valid: false,
     showPassword1: false,
     // Form fields
@@ -83,7 +83,12 @@ export default {
   computed: {
     ...mapState({
       authStrategy: state => state.oAuthStrategy,
+      userLoggedIn: state => state.authentication.loggedIn
     })
+  },
+  mounted() {
+    // Make the dialog visible only if no user is logged in
+    this.visible = !this.userLoggedIn;
   },
   methods: {
     async login() {
@@ -94,18 +99,10 @@ export default {
       try {
         // Login on B2P SSO
         console.log(`Authenticating with '${this.authStrategy}' strategy...`)
-        // todo: CORS problems on GET OPTIONS
-        await this.$auth.loginWith(this.authStrategy, {
-          data: {
-            email: this.username,
-            password: this.password
-          },
-        }).then((data) => {
-          console.log("Done, got: ", data)
-        });
+        await this.$auth.loginWith(this.authStrategy, { data: this.loginData })
+          .then(() => this.$toast.success('Logged In!'));
       } catch (e) {
-        console.log("Done, error: ", e)
-        this.$toast.error('credentials')
+        this.$toast.error('Login failed!')
         this.visible = true;
       }
     }
