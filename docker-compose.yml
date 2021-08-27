@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+
+  # Front UI build tools
+  node-nuxtjs:
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile
+      target: node
+      args:
+        - TAG_NODEJS=${TAG_NODEJS:-14}
+        - VERSION=${PROJECT_PWA_VERSION:-1}
+    image: ${PROJECT:-test}_nuxtjs:${PROJECT_VERSION:-0}
+    container_name: ${PROJECT:-test}_nuxtjs
+    restart: unless-stopped
+    environment:
+      - "NODE_ENV=${NODE_ENV:-development}"
+      - "NODE_USER=${NODE_USER:-node}"
+      - "HOST=0.0.0.0"
+      - "API_URL=${API_URL:-http://backend:80}"
+      - "AUTH_URL=${AUTH_URL:-}"
+    networks:
+      - dev
+
+  # Front UI web server (for the NuxtJs application)
+  nginx-ui:
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile
+      target: nginx
+      args:
+        - TAG_NGINX=${TAG_NGINX:-1.20}
+        - VERSION=${PROJECT_PWA_VERSION:-1}
+    image: ${PROJECT:-test}_pwa:${PROJECT_VERSION:-0}
+    container_name: ${PROJECT:-test}_nginx_ui
+    restart: unless-stopped
+    environment:
+      - "NODE_ENV=${NODE_ENV:-production}"
+      - "NODE_USER=${NODE_USER:-node}"
+    networks:
+      - dev
+
+# My own network
+networks:
+  dev:
+
+## Join the backend network if it exists...
+#networks:
+#  dev:
+#    external:
+#      name: test-sf5_dev
