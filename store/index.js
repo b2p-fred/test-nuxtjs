@@ -11,8 +11,8 @@ export const state = () => ({
   oAuthEnabled: false,
   oAuthStrategy: 'local',
 
-  // oidcConfiguration: "/master/oidc/.well-known/oauth-authorization-server",
-  oidcConfiguration: "/release/oidc/.well-known/oauth-authorization-server",
+  // oidcConfigurationUri: "/master/oidc/.well-known/oauth-authorization-server",
+  oidcConfigurationUri: "/release/oidc/.well-known/oauth-authorization-server",
 })
 
 export const mutations = {

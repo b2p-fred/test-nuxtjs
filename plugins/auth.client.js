@@ -7,12 +7,12 @@ export default function({ $auth }) {
   }
 
   // Use this function for all authentication error specific code
-  // $auth.onError((error, name, endpoint) => {
-  //   console.error('Authentication error...', error, name, endpoint);
-  // })
+  $auth.onError((error, name, endpoint) => {
+    console.error('Authentication error...', error, name, endpoint);
+  })
 
   // Use this function to catch the login/logout redirections
-  // $auth.onRedirect((to, from) => {
-  //   console.log('Redirecting...', to);
-  // })
+  $auth.onRedirect((to, from) => {
+    console.log('Redirecting...', to);
+  })
 }
